@@ -69,8 +69,8 @@ export async function analyzeReviews(reviews: string): Promise<AnalysisResult> {
     console.log("API Key present:", !!apiKey, "Length:", apiKey?.length);
     
     const genAI = getGeminiClient();
-    // Use gemini-1.5-flash - the fastest and most available model
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    // Use gemini-pro - the most stable and widely available model
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
     
     console.log("Sending request to Gemini API...");
 
