@@ -173,6 +173,70 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
 - **Icons**: Lucide React
 - **Theme**: next-themes (dark/light mode)
 
+## Deployment to Vercel
+
+Deploy your application to Vercel in minutes:
+
+### Option 1: Deploy via Vercel Dashboard (Recommended)
+
+1. **Push your code to GitHub**
+   ```bash
+   git add .
+   git commit -m "Ready for deployment"
+   git push origin main
+   ```
+
+2. **Go to [Vercel](https://vercel.com)**
+   - Sign in with your GitHub account
+   - Click "Add New Project"
+
+3. **Import Your Repository**
+   - Select "Import Git Repository"
+   - Choose your `smart-retail-assistant` repository
+   - Click "Import"
+
+4. **Configure Environment Variables**
+   - In the "Environment Variables" section, click "Add Variable"
+   - Add: `GEMINI_API_KEY` with your actual Gemini API key
+   - Get your API key from: https://aistudio.google.com/app/apikey
+
+5. **Deploy**
+   - Click "Deploy"
+   - Wait 2-3 minutes for build and deployment
+   - Your app will be live at `https://your-project.vercel.app`
+
+### Option 2: Deploy via Vercel CLI
+
+```bash
+# Install Vercel CLI globally
+npm install -g vercel
+
+# Login to Vercel
+vercel login
+
+# Deploy (first time)
+vercel
+
+# Deploy to production
+vercel --prod
+```
+
+**Note:** Remember to add your `GEMINI_API_KEY` environment variable in the Vercel dashboard after deployment!
+
+### Post-Deployment Steps
+
+1. Go to your Vercel project dashboard
+2. Navigate to **Settings** → **Environment Variables**
+3. Add `GEMINI_API_KEY` with your Gemini API key
+4. Redeploy if necessary (changes to env vars require redeployment)
+
+### What's Configured for Vercel?
+
+✅ **vercel.json** - Deployment configuration  
+✅ **next.config.mjs** - Standalone output for optimized builds  
+✅ **Package scripts** - Standard Next.js build commands  
+✅ **Environment variables** - GEMINI_API_KEY support  
+
 ## Scripts
 
 | Command | Description |
