@@ -9,6 +9,7 @@ export interface AnalysisResult {
   pros: string[];
   cons: string[];
   summary: string;
+  source?: "scraped" | "manual" | "demo"; // Indicates where reviews came from
 }
 
 // API request body

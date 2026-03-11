@@ -13,7 +13,10 @@ import {
   FileText, 
   Copy, 
   Check,
-  Share2
+  Share2,
+  Globe,
+  Edit3,
+  Database
 } from "lucide-react";
 import { AnalysisResult } from "@/lib/types";
 import SentimentChart from "@/components/SentimentChart";
@@ -24,6 +27,14 @@ interface ResultCardsProps {
 
 export default function ResultCards({ result }: ResultCardsProps) {
   const [copied, setCopied] = useState(false);
+
+  // Get source badge info
+  const getSourceInfo = () => {
+    if (result.source === "scraped") {
+      return { label: "Web Analysis", icon: Globe, color: "text-green-600 bg-green-100 dark:bg-green-900/30" };
+    }
+    return { label: "Analysis Complete", icon: Check, color: "text-brand-600 bg-brand-100 dark:bg-brand-900/30" };
+  };
 
   // Get sentiment color based on sentiment value
   const getSentimentColor = (sentiment: string) => {
@@ -44,6 +55,8 @@ export default function ResultCards({ result }: ResultCardsProps) {
     const match = result.overall_rating.match(/(\d+\.?\d*)/);
     return match ? parseFloat(match[1]) : 0;
   };
+
+  const sourceInfo = getSourceInfo();
 
   // Copy results to clipboard
   const copyToClipboard = async () => {
@@ -88,18 +101,26 @@ ${result.summary}
 
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6 animate-fade-in">
-      {/* Action Buttons */}
-      <div className="flex justify-end gap-2">
-        <button
-          onClick={copyToClipboard}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg
-                     bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300
-                     hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-sm"
-        >
-          {copied ? (
-            <>
-              <Check className="w-4 h-4 text-green-500" />
-              Copied!
+      {/* Source Badge and Action Buttons */}
+      <div className="flex justify-between items-center">
+        {/* Source Badge */}
+        <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium ${sourceInfo.color}`}>
+          <sourceInfo.icon className="w-4 h-4" />
+          {sourceInfo.label}
+        </div>
+        
+        {/* Action Buttons */}
+        <div className="flex gap-2">
+          <button
+            onClick={copyToClipboard}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg
+                       bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300
+                       hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-sm"
+          >
+            {copied ? (
+              <>
+                <Check className="w-4 h-4 text-green-500" />
+                Copied!
             </>
           ) : (
             <>
@@ -117,6 +138,7 @@ ${result.summary}
           <Share2 className="w-4 h-4" />
           Share
         </button>
+        </div>
       </div>
 
       {/* Top Row - Score and Sentiment */}

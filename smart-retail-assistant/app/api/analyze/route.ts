@@ -5,6 +5,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { analyzeReviews, isUrl, MOCK_REVIEWS, getFallbackAnalysis } from "@/lib/ai";
+import { scrapeReviews } from "@/lib/scraper";
 import { AnalyzeRequest } from "@/lib/types";
 
 export async function POST(request: NextRequest) {
@@ -31,12 +32,23 @@ export async function POST(request: NextRequest) {
 
     // Determine the reviews to analyze
     let reviewsToAnalyze: string;
+    let scrapingUsed = false;
 
     if (isUrl(input)) {
-      // If URL is provided, use mock reviews for demo
-      // In production, this would scrape the actual page
-      console.log("URL detected, using mock reviews for demo:", input);
-      reviewsToAnalyze = MOCK_REVIEWS;
+      console.log("URL detected, attempting to scrape reviews:", input);
+      
+      // Try to scrape reviews from the URL
+      const scrapedReviews = await scrapeReviews(input);
+      
+      if (scrapedReviews) {
+        console.log("Successfully scraped reviews from URL");
+        reviewsToAnalyze = scrapedReviews;
+        scrapingUsed = true;
+      } else {
+        // Fallback to mock reviews if scraping fails
+        console.log("Scraping failed, using mock reviews for demo");
+        reviewsToAnalyze = MOCK_REVIEWS;
+      }
     } else {
       // Use the provided reviews directly
       reviewsToAnalyze = input;
